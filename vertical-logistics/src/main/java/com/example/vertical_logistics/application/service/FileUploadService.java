@@ -7,6 +7,7 @@ import com.example.vertical_logistics.application.dto.UserDTO;
 import com.example.vertical_logistics.application.mapper.UserMapper;
 import com.example.vertical_logistics.application.port.in.FileUploadUseCase;
 import com.example.vertical_logistics.domain.model.User;
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +31,8 @@ public class FileUploadService implements FileUploadUseCase {
     private final UserService userService;
     private final OrderService orderService;
     private final ProductService productService;
+    @Getter
+    private  List<UserDTO> userDTOs;
 
     public FileUploadService(UserRepository userRepository, UserService userService, OrderService orderService, ProductService productService) {
         this.userRepository = userRepository;
@@ -44,7 +47,7 @@ public class FileUploadService implements FileUploadUseCase {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
         }
-        List<UserDTO> userDTOs = parseFile(file);
+        userDTOs = parseFile(file);
         saveUsersWithOrdersAndProducts(userDTOs);
     }
 
@@ -62,22 +65,22 @@ public class FileUploadService implements FileUploadUseCase {
         }
     }
 
-    @Override
-    public List<UserDTO> getOrders(Integer orderId, String startDate, String endDate) {
-        List<User> users;
-
-        if (orderId != null) {
-            users = userRepository.findByOrderId(orderId);
-        } else if (startDate != null && endDate != null) {
-            LocalDate start = LocalDate.parse(startDate);
-            LocalDate end = LocalDate.parse(endDate);
-            users = userRepository.findByDateRange(start, end);
-        } else {
-            users = userRepository.findAll();
-        }
-
-        return users.stream().map(UserMapper::toDTO).collect(Collectors.toList());
-    }
+    //    @Override
+//    public List<UserDTO> getOrders(Integer orderId, String startDate, String endDate) {
+//        List<User> users;
+//
+//        if (orderId != null) {
+//            users = userRepository.findByOrderId(orderId);
+//        } else if (startDate != null && endDate != null) {
+//            LocalDate start = LocalDate.parse(startDate);
+//            LocalDate end = LocalDate.parse(endDate);
+//            users = userRepository.findByDateRange(start, end);
+//        } else {
+//            users = userRepository.findAll();
+//        }
+//
+//        return users.stream().map(UserMapper::toDTO).collect(Collectors.toList());
+//    }
 
     private List<UserDTO> parseFile(MultipartFile file) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
