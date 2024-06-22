@@ -1,6 +1,7 @@
 package com.example.vertical_logistics.application.port.out;
 
 import com.example.vertical_logistics.domain.model.User;
+
 import java.time.LocalDate;
 import java.util.List;
 

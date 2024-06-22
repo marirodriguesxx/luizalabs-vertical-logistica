@@ -1,11 +1,11 @@
 package com.example.vertical_logistics.adapter.in.web;
 
+import com.example.vertical_logistics.application.port.in.FileUploadUseCase;
+import com.example.vertical_logistics.domain.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import com.example.vertical_logistics.application.port.in.FileUploadUseCase;
-import com.example.vertical_logistics.domain.model.User;
 
 import java.io.IOException;
 import java.util.Collections;
