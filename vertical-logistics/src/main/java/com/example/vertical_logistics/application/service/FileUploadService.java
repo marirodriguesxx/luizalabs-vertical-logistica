@@ -1,11 +1,11 @@
 package com.example.vertical_logistics.application.service;
 
-import com.example.vertical_logistics.adapter.out.persistence.OrderRepository;
-import com.example.vertical_logistics.adapter.out.persistence.ProductRepository;
 import com.example.vertical_logistics.adapter.out.persistence.UserRepository;
+import com.example.vertical_logistics.application.dto.OrderDTO;
+import com.example.vertical_logistics.application.dto.ProductDTO;
+import com.example.vertical_logistics.application.dto.UserDTO;
+import com.example.vertical_logistics.application.mapper.UserMapper;
 import com.example.vertical_logistics.application.port.in.FileUploadUseCase;
-import com.example.vertical_logistics.domain.model.Order;
-import com.example.vertical_logistics.domain.model.Product;
 import com.example.vertical_logistics.domain.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,18 +21,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class FileUploadService implements FileUploadUseCase {
 
     private final UserRepository userRepository;
-    private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
+    private final UserService userService;
+    private final OrderService orderService;
+    private final ProductService productService;
 
-    public FileUploadService(UserRepository userRepository, OrderRepository orderRepository, ProductRepository productRepository) {
+    public FileUploadService(UserRepository userRepository, UserService userService, OrderService orderService, ProductService productService) {
         this.userRepository = userRepository;
-        this.orderRepository = orderRepository;
-        this.productRepository = productRepository;
+        this.userService = userService;
+        this.orderService = orderService;
+        this.productService = productService;
     }
 
     @Override
@@ -41,43 +44,47 @@ public class FileUploadService implements FileUploadUseCase {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
         }
-        List<User> users = parseFile(file);
-        saveUsersWithOrdersAndProducts(users);
+        List<UserDTO> userDTOs = parseFile(file);
+        saveUsersWithOrdersAndProducts(userDTOs);
     }
 
-    private void saveUsersWithOrdersAndProducts(List<User> users) {
-        for (User user : users) {
-            userRepository.save(user);
-            for (Order order : user.getOrders()) {
-                order.setUser(user);
-                orderRepository.save(order);
-                for (Product product : order.getProducts()) {
-                    product.setOrder(order);
-                    productRepository.save(product);
-                }
-            }
+    private void saveUsersWithOrdersAndProducts(List<UserDTO> userDTOs) {
+        for (UserDTO userDTO : userDTOs) {
+            User user = userService.saveUser(userDTO);
+
+            userDTO.getOrders().forEach(orderDTO -> {
+                var order = orderService.saveOrder(orderDTO, user);
+
+                orderDTO.getProducts().forEach(productDTO -> {
+                    productService.saveProduct(productDTO, order);
+                });
+            });
         }
     }
 
     @Override
-    public List<User> getOrders(Integer orderId, String startDate, String endDate) {
+    public List<UserDTO> getOrders(Integer orderId, String startDate, String endDate) {
+        List<User> users;
+
         if (orderId != null) {
-            return userRepository.findByOrderId(orderId);
-        }
-        if (startDate != null && endDate != null) {
+            users = userRepository.findByOrderId(orderId);
+        } else if (startDate != null && endDate != null) {
             LocalDate start = LocalDate.parse(startDate);
             LocalDate end = LocalDate.parse(endDate);
-            return userRepository.findByDateRange(start, end);
+            users = userRepository.findByDateRange(start, end);
+        } else {
+            users = userRepository.findAll();
         }
-        return userRepository.findAll();
+
+        return users.stream().map(UserMapper::toDTO).collect(Collectors.toList());
     }
 
-    private List<User> parseFile(MultipartFile file) throws IOException {
+    private List<UserDTO> parseFile(MultipartFile file) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
         String line;
-        Map<Integer, User> userMap = new HashMap<>();
-        Map<Integer, Order> orderMap = new HashMap<>();
-        Map<Integer, Product> productMap = new HashMap<>();
+        Map<Integer, UserDTO> userMap = new HashMap<>();
+        Map<Integer, OrderDTO> orderMap = new HashMap<>();
+        Map<Integer, ProductDTO> productMap = new HashMap<>();
 
         while ((line = reader.readLine()) != null) {
             int userId = Integer.parseInt(line.substring(0, 10).trim());
@@ -88,35 +95,33 @@ public class FileUploadService implements FileUploadUseCase {
             String dateStr = line.substring(87, 95).trim();
             LocalDate date = LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyyMMdd"));
 
-            User user = userMap.computeIfAbsent(userId, id -> {
-                User newUser = new User();
+            UserDTO userDTO = userMap.computeIfAbsent(userId, id -> {
+                UserDTO newUser = new UserDTO();
                 newUser.setUserId(id);
                 newUser.setName(userName);
                 newUser.setOrders(new ArrayList<>());
                 return newUser;
             });
 
-            Order order = orderMap.computeIfAbsent(orderId, id -> {
-                Order newOrder = new Order();
+            OrderDTO orderDTO = orderMap.computeIfAbsent(orderId, id -> {
+                OrderDTO newOrder = new OrderDTO();
                 newOrder.setOrderId(id);
                 newOrder.setDate(date);
-                newOrder.setUser(user);  // Configura a referência de User na ordem
                 newOrder.setProducts(new ArrayList<>());
-                user.getOrders().add(newOrder);
+                userDTO.getOrders().add(newOrder);
                 return newOrder;
             });
 
-            Product product = productMap.computeIfAbsent(productId, id -> {
-                Product newProduct = new Product();
+            ProductDTO productDTO = productMap.computeIfAbsent(productId, id -> {
+                ProductDTO newProduct = new ProductDTO();
                 newProduct.setProductId(id);
                 newProduct.setValue(productValue);
-                newProduct.setOrder(order);  // Configura a referência de Order no produto
                 return newProduct;
             });
 
-            order.getProducts().add(product);
-            order.setTotal(order.getProducts().stream()
-                    .map(Product::getValue)
+            orderDTO.getProducts().add(productDTO);
+            orderDTO.setTotal(orderDTO.getProducts().stream()
+                    .map(ProductDTO::getValue)
                     .reduce(BigDecimal.ZERO, BigDecimal::add));
         }
 
