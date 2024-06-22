@@ -11,7 +11,6 @@ public class UserMapper {
         UserDTO userDTO = new UserDTO();
         userDTO.setUserId(user.getUserId());
         userDTO.setName(user.getName());
-        userDTO.setOrders(user.getOrders().stream().map(OrderMapper::toDTO).collect(Collectors.toList()));
         return userDTO;
     }
 
@@ -19,7 +18,6 @@ public class UserMapper {
         User user = new User();
         user.setUserId(userDTO.getUserId());
         user.setName(userDTO.getName());
-        user.setOrders(userDTO.getOrders().stream().map(OrderMapper::toEntity).collect(Collectors.toList()));
         return user;
     }
 }

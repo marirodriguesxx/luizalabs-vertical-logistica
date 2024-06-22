@@ -12,7 +12,6 @@ public class OrderMapper {
         orderDTO.setOrderId(order.getOrderId());
         orderDTO.setTotal(order.getTotal());
         orderDTO.setDate(order.getDate());
-        orderDTO.setProducts(order.getProducts().stream().map(ProductMapper::toDTO).collect(Collectors.toList()));
         return orderDTO;
     }
 
@@ -21,7 +20,6 @@ public class OrderMapper {
         order.setOrderId(orderDTO.getOrderId());
         order.setTotal(orderDTO.getTotal());
         order.setDate(orderDTO.getDate());
-        order.setProducts(orderDTO.getProducts().stream().map(ProductMapper::toEntity).collect(Collectors.toList()));
         return order;
     }
 }
