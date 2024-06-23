@@ -9,6 +9,4 @@ import java.util.List;
 public interface FileUploadUseCase {
     void uploadFile(MultipartFile file) throws IOException;
     List<UserDTO> getUserDTOs();
-    List<UserDTO> filterUsersByOrderId(Integer orderId);
-    List<UserDTO> filterUsersByDateRange(String startDate, String endDate);
 }

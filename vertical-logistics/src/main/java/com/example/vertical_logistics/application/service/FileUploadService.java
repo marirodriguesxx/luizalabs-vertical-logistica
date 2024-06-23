@@ -23,15 +23,13 @@ import java.util.stream.Collectors;
 @Service
 public class FileUploadService implements FileUploadUseCase {
 
-    private final UserRepository userRepository;
     private final UserService userService;
     private final OrderService orderService;
     private final ProductService productService;
     @Getter
     private  List<UserDTO> userDTOs = new ArrayList<>();
 
-    public FileUploadService(UserRepository userRepository, UserService userService, OrderService orderService, ProductService productService) {
-        this.userRepository = userRepository;
+    public FileUploadService(UserService userService, OrderService orderService, ProductService productService) {
         this.userService = userService;
         this.orderService = orderService;
         this.productService = productService;
@@ -59,26 +57,6 @@ public class FileUploadService implements FileUploadUseCase {
                 });
             });
         }
-    }
-
-    @Override
-    public List<UserDTO> filterUsersByOrderId(Integer orderId) {
-        return userDTOs.stream()
-                .filter(userDTO -> userDTO.getOrders().stream().anyMatch(orderDTO -> Objects.equals(orderDTO.getOrderId(), orderId)))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<UserDTO> filterUsersByDateRange(String startDate, String endDate) {
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
-        return userDTOs.stream()
-                .filter(userDTO -> userDTO.getOrders().stream().anyMatch(orderDTO -> {
-                    LocalDate orderDate = orderDTO.getDate();
-                    return (orderDate.isEqual(start) || orderDate.isAfter(start)) &&
-                            (orderDate.isEqual(end) || orderDate.isBefore(end));
-                }))
-                .collect(Collectors.toList());
     }
 
     private List<UserDTO> parseFile(MultipartFile file) throws IOException {

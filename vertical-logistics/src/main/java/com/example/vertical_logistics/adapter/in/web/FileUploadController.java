@@ -44,25 +44,4 @@ public class FileUploadController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
         }
     }
-
-    @GetMapping("/ordersById")
-    public ResponseEntity<List<UserDTO>>  getOrdersById(@RequestParam(required = false) Integer orderId) {
-        try {
-            List<UserDTO> users = fileUploadUseCase.filterUsersByOrderId(orderId);
-            return ResponseEntity.ok(users);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
-        }
-    }
-
-    @GetMapping("/ordersByDate")
-    public ResponseEntity<List<UserDTO>>  getOrdersById(@RequestParam(required = false) String startDate,
-                                                   @RequestParam(required = false) String endDate) {
-        try {
-            List<UserDTO> users = fileUploadUseCase.filterUsersByDateRange(startDate,endDate);
-            return ResponseEntity.ok(users);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
-        }
-    }
 }
