@@ -6,9 +6,11 @@ import com.example.vertical_logistics.application.dto.ProductDTO;
 import com.example.vertical_logistics.application.mapper.OrderMapper;
 import com.example.vertical_logistics.domain.model.Order;
 import com.example.vertical_logistics.domain.model.User;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,5 +48,32 @@ public class OrderService {
         }
 
         return ordersResult;
+    }
+
+    public OrderDTO findOrderById(Integer orderId) {
+        Optional<Order> orderOptional = orderRepository.findOrderById(orderId);
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            OrderDTO orderDTO = OrderMapper.toDTO(order);
+            List<ProductDTO> products = productService.findProductsByOrderId(order.getOrderId());
+            orderDTO.setProducts(products);
+            return orderDTO;
+        } else {
+            throw new EntityNotFoundException("Order not found with ID: " + orderId);
+        }
+    }
+
+    public List<OrderDTO> findOrdersByDateRange(LocalDate startDate, LocalDate endDate) {
+        List<Order> orders = orderRepository.findOrdersByDateRange(startDate, endDate);
+        List<OrderDTO> orderDTOs = new ArrayList<>();
+
+        for (Order order : orders) {
+            OrderDTO orderDTO = OrderMapper.toDTO(order);
+            List<ProductDTO> products = productService.findProductsByOrderId(order.getOrderId());
+            orderDTO.setProducts(products);
+            orderDTOs.add(orderDTO);
+        }
+
+        return orderDTOs;
     }
 }
