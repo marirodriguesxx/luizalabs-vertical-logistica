@@ -3,6 +3,7 @@ package com.example.vertical_logistics.application.mapper;
 import com.example.vertical_logistics.application.dto.OrderDTO;
 import com.example.vertical_logistics.domain.model.Order;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class OrderMapper {
@@ -21,5 +22,17 @@ public class OrderMapper {
         order.setTotal(orderDTO.getTotal());
         order.setDate(orderDTO.getDate());
         return order;
+    }
+
+    public static List<OrderDTO> toDTOList(List<Order> orders) {
+        return orders.stream()
+                .map(OrderMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public static List<Order> toEntityList(List<OrderDTO> orderDTOs) {
+        return orderDTOs.stream()
+                .map(OrderMapper::toEntity)
+                .collect(Collectors.toList());
     }
 }
