@@ -2,7 +2,6 @@ package com.example.vertical_logistics.adapter.in.web;
 
 
 import com.example.vertical_logistics.application.dto.UserDTO;
-import com.example.vertical_logistics.application.mapper.UserMapper;
 import com.example.vertical_logistics.application.service.UserService;
 import com.example.vertical_logistics.domain.model.User;
 import org.springframework.http.ResponseEntity;

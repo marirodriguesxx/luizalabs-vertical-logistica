@@ -1,6 +1,5 @@
 package com.example.vertical_logistics.adapter.out.persistence;
 
-import com.example.vertical_logistics.application.dto.ProductDTO;
 import com.example.vertical_logistics.domain.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
