@@ -5,19 +5,28 @@ import com.example.vertical_logistics.application.dto.ProductDTO;
 import com.example.vertical_logistics.application.mapper.ProductMapper;
 import com.example.vertical_logistics.domain.model.Order;
 import com.example.vertical_logistics.domain.model.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProductService {
-    private final ProductRepository productRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    public Product saveProduct(ProductDTO productDTO, Order order) {
+    public void saveProduct(ProductDTO productDTO, Order order) {
         Product product = ProductMapper.toEntity(productDTO);
         product.setOrder(order);
-        return productRepository.save(product);
+        productRepository.save(product);
+    }
+
+    public List<ProductDTO> findProductsByOrderId(Integer orderId) {
+        return ProductMapper.toDTOList(productRepository.findProductsByOrderId(orderId));
     }
 }
