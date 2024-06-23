@@ -6,6 +6,8 @@ import com.example.vertical_logistics.application.mapper.UserMapper;
 import com.example.vertical_logistics.domain.model.User;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -17,5 +19,9 @@ public class UserService {
     public User saveUser(UserDTO userDTO) {
         User user = UserMapper.toEntity(userDTO);
         return userRepository.save(user);
+    }
+
+    public Optional<User> getUserById(Integer id) {
+        return userRepository.findById(id);
     }
 }

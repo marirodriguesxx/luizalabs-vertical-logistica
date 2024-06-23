@@ -4,7 +4,6 @@ import com.example.vertical_logistics.adapter.out.persistence.UserRepository;
 import com.example.vertical_logistics.application.dto.OrderDTO;
 import com.example.vertical_logistics.application.dto.ProductDTO;
 import com.example.vertical_logistics.application.dto.UserDTO;
-import com.example.vertical_logistics.application.mapper.UserMapper;
 import com.example.vertical_logistics.application.port.in.FileUploadUseCase;
 import com.example.vertical_logistics.domain.model.User;
 import lombok.Getter;
@@ -18,10 +17,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +28,7 @@ public class FileUploadService implements FileUploadUseCase {
     private final OrderService orderService;
     private final ProductService productService;
     @Getter
-    private  List<UserDTO> userDTOs;
+    private  List<UserDTO> userDTOs = new ArrayList<>();
 
     public FileUploadService(UserRepository userRepository, UserService userService, OrderService orderService, ProductService productService) {
         this.userRepository = userRepository;
@@ -65,22 +61,25 @@ public class FileUploadService implements FileUploadUseCase {
         }
     }
 
-    //    @Override
-//    public List<UserDTO> getOrders(Integer orderId, String startDate, String endDate) {
-//        List<User> users;
-//
-//        if (orderId != null) {
-//            users = userRepository.findByOrderId(orderId);
-//        } else if (startDate != null && endDate != null) {
-//            LocalDate start = LocalDate.parse(startDate);
-//            LocalDate end = LocalDate.parse(endDate);
-//            users = userRepository.findByDateRange(start, end);
-//        } else {
-//            users = userRepository.findAll();
-//        }
-//
-//        return users.stream().map(UserMapper::toDTO).collect(Collectors.toList());
-//    }
+    @Override
+    public List<UserDTO> filterUsersByOrderId(Integer orderId) {
+        return userDTOs.stream()
+                .filter(userDTO -> userDTO.getOrders().stream().anyMatch(orderDTO -> Objects.equals(orderDTO.getOrderId(), orderId)))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDTO> filterUsersByDateRange(String startDate, String endDate) {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        return userDTOs.stream()
+                .filter(userDTO -> userDTO.getOrders().stream().anyMatch(orderDTO -> {
+                    LocalDate orderDate = orderDTO.getDate();
+                    return (orderDate.isEqual(start) || orderDate.isAfter(start)) &&
+                            (orderDate.isEqual(end) || orderDate.isBefore(end));
+                }))
+                .collect(Collectors.toList());
+    }
 
     private List<UserDTO> parseFile(MultipartFile file) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));

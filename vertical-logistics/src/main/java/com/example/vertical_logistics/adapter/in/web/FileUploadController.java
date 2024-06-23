@@ -2,7 +2,6 @@ package com.example.vertical_logistics.adapter.in.web;
 
 import com.example.vertical_logistics.application.dto.UserDTO;
 import com.example.vertical_logistics.application.port.in.FileUploadUseCase;
-import com.example.vertical_logistics.application.service.FileUploadService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,26 +44,25 @@ public class FileUploadController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
         }
     }
-//
-//    @GetMapping("/orders")
-//    public ResponseEntity<List<UserDTO>> getOrders(@RequestParam(required = false) Integer orderId,
-//                                                   @RequestParam(required = false) String startDate,
-//                                                   @RequestParam(required = false) String endDate) {
-//        try {
-//            List<UserDTO> orders = fileUploadUseCase.getOrders(orderId, startDate, endDate);
-//            return ResponseEntity.ok(orders);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
-//        }
-//    }
-//
-//    @GetMapping("/users")
-//    public ResponseEntity<List<UserDTO>> getAllUsersWithOrdersAndProducts() {
-//        try {
-//            List<UserDTO> users = fileUploadUseCase.getAllUsersWithOrdersAndProducts();
-//            return ResponseEntity.ok(users);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
-//        }
-//    }
+
+    @GetMapping("/ordersById")
+    public ResponseEntity<List<UserDTO>>  getOrdersById(@RequestParam(required = false) Integer orderId) {
+        try {
+            List<UserDTO> users = fileUploadUseCase.filterUsersByOrderId(orderId);
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
+    }
+
+    @GetMapping("/ordersByDate")
+    public ResponseEntity<List<UserDTO>>  getOrdersById(@RequestParam(required = false) String startDate,
+                                                   @RequestParam(required = false) String endDate) {
+        try {
+            List<UserDTO> users = fileUploadUseCase.filterUsersByDateRange(startDate,endDate);
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
+    }
 }
