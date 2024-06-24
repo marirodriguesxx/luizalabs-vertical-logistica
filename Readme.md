@@ -9,3 +9,10 @@ Neste desafio, é necessário desenvolver um sistema que integre dois sistemas d
 3. [Configuração e Testes via Postman](docs/configuracao.md)
 4. [Estrutura de Arquivos do projeto](docs/estrutura_de_arquivos.md)
 5. [Desenho da API](docs/desenho_API.md)
+
+## Video Demonstrativo
+
+<video width="600" controls>
+  <source src="docs/demo.mp4" type="video/mp4">
+  Seu navegador não suporta o elemento de vídeo.
+</video>

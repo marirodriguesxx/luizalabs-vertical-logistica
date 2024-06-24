@@ -46,19 +46,12 @@ vertical_logistics/
 │   │   │                       └── User.java
 │   │   └── resources/
 │   │       ├── application.properties
-│   │       └── data.sql
 │   └── test/
 │       ├── java/
 │       │   └── com/
 │       │       └── example/
 │       │           └── vertical_logistics/
 │       │               ├── VerticalLogisticsApplicationTests.java
-│       │               ├── adapter/
-│       │               │   └── out/
-│       │               │       └── persistence/
-│       │               │           ├── UserRepositoryTest.java
-│       │               │           ├── OrderRepositoryTest.java
-│       │               │           └── ProductRepositoryTest.java
 │       │               ├── application/
 │       │               │   └── service/
 │       │               │       ├── FileUploadServiceTest.java
