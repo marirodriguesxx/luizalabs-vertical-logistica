@@ -15,10 +15,6 @@ Neste desafio, é necessário desenvolver um sistema que integre dois sistemas d
 ## Video Demonstrativo
 
 <video width="600" controls>
-  <source src="docs/demo.mp4" type="video/mp4">
+  <source src="docs/demo2.mp4" type="video/mp4">
   Seu navegador não suporta o elemento de vídeo.
 </video>
-
-## Demonstração em GIF
-
-![Gif Demonstração](docs/demo.gif)
