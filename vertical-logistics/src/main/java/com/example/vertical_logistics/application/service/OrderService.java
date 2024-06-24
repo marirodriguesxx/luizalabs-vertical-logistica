@@ -23,8 +23,9 @@ public class OrderService {
     @Autowired
     private final OrderRepository orderRepository;
 
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, ProductService productService) {
         this.orderRepository = orderRepository;
+        this.productService = productService;
     }
 
     public Order saveOrder(OrderDTO orderDTO, User user) {

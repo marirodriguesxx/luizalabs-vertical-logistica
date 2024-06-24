@@ -1,6 +1,5 @@
 package com.example.vertical_logistics.application.service;
 
-import com.example.vertical_logistics.adapter.out.persistence.UserRepository;
 import com.example.vertical_logistics.application.dto.OrderDTO;
 import com.example.vertical_logistics.application.dto.ProductDTO;
 import com.example.vertical_logistics.application.dto.UserDTO;
@@ -17,8 +16,10 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class FileUploadService implements FileUploadUseCase {

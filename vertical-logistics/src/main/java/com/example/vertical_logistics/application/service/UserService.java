@@ -20,8 +20,9 @@ public class UserService {
     @Autowired
     private OrderService orderService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, OrderService orderService) {
         this.userRepository = userRepository;
+        this.orderService = orderService;
     }
 
     public User saveUser(UserDTO userDTO) {
