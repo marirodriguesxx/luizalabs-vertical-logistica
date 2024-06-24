@@ -16,3 +16,7 @@ Neste desafio, é necessário desenvolver um sistema que integre dois sistemas d
   <source src="docs/demo.mp4" type="video/mp4">
   Seu navegador não suporta o elemento de vídeo.
 </video>
+
+## Demonstração em GIF
+
+![Demonstração](docs/demo.gif)
