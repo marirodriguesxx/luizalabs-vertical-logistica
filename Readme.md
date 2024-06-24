@@ -6,11 +6,6 @@ Neste desafio, é necessário desenvolver um sistema que integre dois sistemas d
 
 1. [Estrutura de Dados de entrada e saída](docs/estrutura_de_dados.md)
 2. [Arquitetura Hexagonal](docs/arquitetura_hexagona.md)
-3. [Configuração](docs/configuracao.md)
+3. [Configuração e Testes via Postman](docs/configuracao.md)
 4. [Estrutura de Arquivos do projeto](docs/estrutura_de_arquivos.md)
 5. [Desenho da API](docs/desenho_API.md)
-
-## TODO:
-1. Implementar salvar json no banco de dados e retornar json salvo no banco de dados nao em memoria
-2. implementar filtros em orders 
-3. Se possivel, fazer certo!!!!!

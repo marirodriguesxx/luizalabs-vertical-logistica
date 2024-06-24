@@ -1,26 +1,7 @@
 ### Análise sobre a Arquitetura Hexagonal
 
 #### Introdução
-A arquitetura hexagonal, também conhecida como Arquitetura de Portas e Adaptadores (Ports and Adapters)seu principal objetivo desta arquitetura é criar um design que seja independente de frameworks, bancos de dados, interfaces de usuário e outros elementos externos, permitindo uma maior flexibilidade e facilidade de manutenção.
-
-#### Conceitos Básicos
-A arquitetura hexagonal é baseada em alguns conceitos-chave:
-
-1. **Domínio Central:**
-   - No núcleo da arquitetura hexagonal está o modelo de domínio, que contém a lógica de negócios essencial e as regras fundamentais do sistema. Este domínio central é completamente independente de qualquer tecnologia ou infraestrutura externa.
-
-2. **Portas (Ports):**
-   - As portas definem os pontos de entrada e saída do sistema. Elas são interfaces que descrevem como o sistema pode ser acessado e como ele interage com o mundo exterior. Existem dois tipos principais de portas:
-     - **Entradas (Inbound Ports):** Interfaces que descrevem como as operações de entrada podem acessar a lógica de negócios.
-     - **Saídas (Outbound Ports):** Interfaces que descrevem como a lógica de negócios pode acessar serviços externos.
-
-3. **Adaptadores (Adapters):**
-   - Os adaptadores são implementações das portas que traduzem as chamadas das interfaces externas para o modelo de domínio e vice-versa. Eles podem incluir:
-     - **Adaptadores de Entrada:** Controladores de API, controladores de UI, etc.
-     - **Adaptadores de Saída:** Repositórios, serviços externos, etc.
-
-4. **Independência de Tecnologia:**
-   - Uma das características mais importantes da arquitetura hexagonal é a separação entre o modelo de domínio e a infraestrutura. Isso permite que a lógica de negócios seja testada isoladamente e que diferentes tecnologias possam ser substituídas sem impactar o núcleo do sistema.
+A arquitetura hexagonal, também conhecida como Arquitetura de Portas e Adaptadores (Ports and Adapters) cujo principal objetivo desta arquitetura é criar um design que seja independente de frameworks, bancos de dados, interfaces de usuário e outros elementos externos, permitindo uma maior flexibilidade e facilidade de manutenção.
 
 #### Por que a Arquitetura Hexagonal Conversa Bem com os Princípios SOLID
 
@@ -40,6 +21,3 @@ A arquitetura hexagonal é altamente compatível com os princípios SOLID (Singl
 
 5. **Dependency Inversion Principle (DIP):**
    - A arquitetura hexagonal promove a inversão de dependência ao depender de abstrações (interfaces) em vez de implementações concretas. O domínio central não conhece as implementações concretas dos adaptadores, o que permite uma maior flexibilidade e testabilidade.
-
-#### Conclusão
-A arquitetura hexagonal oferece uma abordagem poderosa e flexível para o design de sistemas, permitindo uma clara separação de preocupações e uma fácil adaptabilidade às mudanças tecnológicas. Sua compatibilidade com os princípios SOLID torna-a uma escolha robusta para a construção de sistemas escaláveis, testáveis e mantíveis, facilitando a evolução do software ao longo do tempo.
