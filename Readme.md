@@ -11,10 +11,3 @@ Neste desafio, é necessário desenvolver um sistema que integre dois sistemas d
 5. [Desenho da API](docs/desenho_API.md)
 6. [Gif Demonstração](docs/demo.gif)
 7. [Video Demonstração](docs/demo.mp4)
-
-## Video Demonstrativo
-
-<video width="600" controls>
-  <source src="docs/demo2.mp4" type="video/mp4">
-  Seu navegador não suporta o elemento de vídeo.
-</video>
