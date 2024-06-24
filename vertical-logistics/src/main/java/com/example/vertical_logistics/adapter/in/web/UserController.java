@@ -4,6 +4,7 @@ package com.example.vertical_logistics.adapter.in.web;
 import com.example.vertical_logistics.application.dto.UserDTO;
 import com.example.vertical_logistics.application.service.UserService;
 import com.example.vertical_logistics.domain.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController {
 
+    @Autowired
     private final UserService userService;
 
     public UserController(UserService userService) {

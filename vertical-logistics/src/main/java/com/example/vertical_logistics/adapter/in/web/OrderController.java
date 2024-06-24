@@ -17,6 +17,10 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<OrderDTO>> getOrdersByUserId(@PathVariable Integer userId) {
         List<OrderDTO> orders = orderService.findOrdersByUserId(userId);
