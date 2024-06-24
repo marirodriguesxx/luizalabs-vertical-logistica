@@ -9,6 +9,8 @@ Neste desafio, é necessário desenvolver um sistema que integre dois sistemas d
 3. [Configuração e Testes via Postman](docs/configuracao.md)
 4. [Estrutura de Arquivos do projeto](docs/estrutura_de_arquivos.md)
 5. [Desenho da API](docs/desenho_API.md)
+6. [Gif Demonstração](docs/demo.gif)
+7. [Video Demonstração](docs/demo.mp4)
 
 ## Video Demonstrativo
 
@@ -19,4 +21,4 @@ Neste desafio, é necessário desenvolver um sistema que integre dois sistemas d
 
 ## Demonstração em GIF
 
-![Demonstração](docs/demo.gif)
+![Gif Demonstração](docs/demo.gif)
